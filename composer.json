@@ -1,0 +1,88 @@
+{
+    "name": "coquibot/coqui-toolkit-imap",
+    "description": "IMAP email management toolkit for Coqui — read, search, send, reply, and organize emails",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^8.4",
+        "directorytree/imapengine": "^1.22",
+        "symfony/mailer": "^7.0",
+        "symfony/mime": "^7.0"
+    },
+    "require-dev": {
+        "carmelosantana/php-agents": "^0.7",
+        "pestphp/pest": "^3.0",
+        "phpstan/phpstan": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "CoquiBot\\Toolkits\\Imap\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "CoquiBot\\Toolkits\\Imap\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "php-agents": {
+            "toolkits": [
+                "CoquiBot\\Toolkits\\Imap\\ImapToolkit"
+            ],
+            "description": "IMAP email management — read, search, send, reply, and organize emails directly from the terminal",
+            "credentials": {
+                "IMAP_HOST": "IMAP server hostname (e.g., imap.gmail.com, outlook.office365.com)",
+                "IMAP_USERNAME": "Email address or username for IMAP authentication",
+                "IMAP_PASSWORD": "Email password or app-specific password for IMAP authentication",
+                "IMAP_PORT": {
+                    "description": "IMAP server port (default: 993)",
+                    "optional": true
+                },
+                "IMAP_ENCRYPTION": {
+                    "description": "IMAP encryption method: ssl or tls (default: ssl)",
+                    "optional": true
+                },
+                "SMTP_HOST": {
+                    "description": "SMTP server hostname — defaults to IMAP host if not set",
+                    "optional": true
+                },
+                "SMTP_PORT": {
+                    "description": "SMTP server port (default: 587)",
+                    "optional": true
+                },
+                "SMTP_USERNAME": {
+                    "description": "SMTP username — defaults to IMAP username if not set",
+                    "optional": true
+                },
+                "SMTP_PASSWORD": {
+                    "description": "SMTP password — defaults to IMAP password if not set",
+                    "optional": true
+                },
+                "SMTP_ENCRYPTION": {
+                    "description": "SMTP encryption method: tls or ssl (default: tls)",
+                    "optional": true
+                }
+            },
+            "gated": {
+                "imap_delete": ["*"],
+                "imap_send": ["*"],
+                "imap_reply": ["*"],
+                "imap_move": ["*"],
+                "imap_folder_manage": ["delete"]
+            }
+        }
+    },
+    "scripts": {
+        "test": "pest",
+        "analyse": "phpstan analyse"
+    },
+    "config": {
+        "sort-packages": true,
+        "preferred-install": "dist",
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
