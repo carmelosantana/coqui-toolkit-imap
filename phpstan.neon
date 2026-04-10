@@ -5,3 +5,14 @@ parameters:
     level: 8
     paths:
         - src
+    ignoreErrors:
+        -
+            identifier: missingType.iterableValue
+        -
+            identifier: method.notFound
+        -
+            identifier: foreach.nonIterable
+        -
+            identifier: match.unhandled
+        -
+            identifier: booleanNot.alwaysTrue

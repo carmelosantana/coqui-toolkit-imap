@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace CoquiBot\Toolkits\Imap\Runtime;
 
-use DirectoryTree\ImapEngine\Message;
+use DirectoryTree\ImapEngine\MessageInterface;
 
 final class MessageFormatter
 {
     private const int MAX_BODY_LENGTH = 4000;
 
-    public function formatMessage(Message $message, bool $includeBody = true): string
+    public function formatMessage(MessageInterface $message, bool $includeBody = true): string
     {
         $lines = [];
 
@@ -33,11 +33,11 @@ final class MessageFormatter
         return implode("\n", $lines);
     }
 
-    public function formatMessageSummary(Message $message): string
+    public function formatMessageSummary(MessageInterface $message): string
     {
         $from = $message->from();
         $fromStr = $from !== null
-            ? ($from->name() !== null ? sprintf('%s <%s>', $from->name(), $from->email()) : $from->email())
+            ? (($name = trim((string) $from->name())) !== '' ? sprintf('%s <%s>', $name, $from->email()) : $from->email())
             : 'Unknown';
 
         $date = $message->date();
@@ -65,7 +65,7 @@ final class MessageFormatter
         return "| UID | From | Subject | Date | Flags |\n| --- | --- | --- | --- | --- |";
     }
 
-    private function formatHeaders(Message $message): string
+    private function formatHeaders(MessageInterface $message): string
     {
         $lines = [];
         $lines[] = '## Headers';
@@ -109,7 +109,7 @@ final class MessageFormatter
         return implode("\n", $lines);
     }
 
-    private function formatBody(Message $message): string
+    private function formatBody(MessageInterface $message): string
     {
         $text = $message->text();
         if ($text !== '' && $text !== null) {
@@ -126,7 +126,7 @@ final class MessageFormatter
         return '*No body content available.*';
     }
 
-    private function formatAttachments(Message $message): string
+    private function formatAttachments(MessageInterface $message): string
     {
         $lines = [];
         $lines[] = '| Filename | Content-Type | Size |';
@@ -157,7 +157,7 @@ final class MessageFormatter
         return $email ?? 'Unknown';
     }
 
-    private function formatFlags(Message $message): string
+    private function formatFlags(MessageInterface $message): string
     {
         $flags = [];
 
